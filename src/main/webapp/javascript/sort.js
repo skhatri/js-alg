@@ -35,6 +35,28 @@ var Sort = (function () {
         }
     };
 
+    Sort.prototype.shellsort = function (a) {
+        var i, j, h = 1, n = a.length;
+
+        while (h < parseInt(n / 3, 10)) {
+            h = 3 * h + 1;
+        }
+
+        while (h >= 1) {
+
+            for (i = h; i < n; i += 1) {
+                for (j = i; j >= h; j -= h) {
+                    if (a[j] < a[j - h]) {
+                        swap(a, j, j - h);
+                    } else {
+                        break;
+                    }
+                }
+            }
+            h = parseInt(h / 3, 10);
+        }
+
+    };
 
     return Sort;
 }());
