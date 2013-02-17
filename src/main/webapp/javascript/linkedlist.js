@@ -1,18 +1,18 @@
 var LinkedList = (function () {
     "use strict";
-    function Node (key, val) {
+    function Node(key, val) {
         this.key = key;
         this.val = val;
         this.next = null;
     }
 
-    function LinkedList () {
+    function LinkedList() {
         this.head = null;
     }
 
-    function ensureNode (val) {
+    function ensureNode(val) {
         var node;
-        if (typeof val === 'string') {
+        if (val !== undefined && val.constructor.name !== 'Node') {
             node = new Node(val, val);
         } else {
             node = val;
@@ -21,9 +21,8 @@ var LinkedList = (function () {
     }
 
     LinkedList.prototype.add = function (val) {
-        var node = ensureNode(val);
-        var cursor = this.head;
-        while (cursor != null && cursor.next != null) {
+        var node = ensureNode(val), cursor = this.head;
+        while (cursor !== null && cursor.next !== null) {
             cursor = cursor.next;
         }
         if (cursor === null) {
@@ -32,19 +31,30 @@ var LinkedList = (function () {
             cursor.next = node;
         }
         return this;
-    }
+    };
 
-    LinkedList.prototype.list = function () {
+    LinkedList.prototype.each = function (fn) {
         var curr = this.head;
-        while (curr != null) {
-            console.log(curr.key);
+        while (curr !== null) {
+            if (typeof fn === 'function') {
+                fn(curr.key);
+            }
             curr = curr.next;
         }
     };
 
+    LinkedList.prototype.list = function () {
+        var curr = this.head, arr = [];
+        while (curr !== null) {
+            arr.push(curr.key);
+            curr = curr.next;
+        }
+        return arr;
+    };
+
     LinkedList.prototype.size = function () {
         var curr = this.head, count = 0;
-        while (curr != null) {
+        while (curr !== null) {
             curr = curr.next;
             count += 1;
         }
@@ -52,22 +62,23 @@ var LinkedList = (function () {
     };
 
     LinkedList.prototype.contains = function (val) {
-        var curr = this.head;
-        var node = ensureNode(val);
-        while (curr != null) {
-            if (curr.key === node.key) { return true; }
+        return this.find(val) !== null;
+    };
+
+    LinkedList.prototype.find = function (val) {
+        var curr = this.head, node = ensureNode(val);
+        while (curr !== null) {
+            if (curr.key === node.key) { return curr; }
             curr = curr.next;
         }
-        return false;
+        return null;
     };
 
     LinkedList.prototype.remove = function (val) {
-        var curr = this.head;
-        var node = ensureNode(val);
-        var prev = null;
-        while (curr != null) {
+        var curr = this.head, node = ensureNode(val), prev = null, tmp;
+        while (curr !== null) {
             if (curr.key === node.key) {
-                var tmp = curr.next;
+                tmp = curr.next;
                 if (prev !== null) {
                     prev.next = tmp;
                 } else {
@@ -81,6 +92,6 @@ var LinkedList = (function () {
         }
         return false;
     };
-    
+
     return LinkedList;
 }());
