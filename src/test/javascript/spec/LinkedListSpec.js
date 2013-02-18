@@ -59,6 +59,8 @@ describe("In a LinkedList, I can", function(){
         list.add("top");
         expect(list.find("this")).toBeTruthy();
         expect(list.find("that")).toBeFalsy();
+        expect(list.find("second")).not.toBeNull();
+        expect(list.find("data")).toBeNull();
     });
 
     it("find its size", function() {
