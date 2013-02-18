@@ -59,10 +59,9 @@ var sort = (function () {
 
         quicksort : function (a) {
             function partition (a, lo, hi) {
-                var i = lo, j = hi + 1, el;
+                var i = lo, j = hi + 1, el = a[lo];
                 while (true) {
-                    el = a[lo];
-                    while (a[i++] < el) {
+                    while (a[++i] < el) {
                         if (i == hi) {
                             break;
                         }
@@ -90,6 +89,7 @@ var sort = (function () {
             }
             qsort(a, 0, a.length - 1);
         },
+        
         qsort3way : function (a) {
             function sort3way (a, lo, hi) {
                 if (lo >= hi) {
